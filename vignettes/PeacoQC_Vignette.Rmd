@@ -40,18 +40,18 @@ library(PeacoQC)
 
 ## WARNING
 Please be aware of the fact that this vignette will create a directory in your current working directory. Since this package is meant to be run on multiple files and the figures are directly created in this directory. 
-Please check the folders corresponding to the output_directory variable when called for in the chuncks of code.
+Please check the folders corresponding to the output_directory variable when called for in the chunks of code.
 
 
 # Standard pre-processing and quality control pipeline
 
 The following pipeline is recommended to use for pre-processing your data.
-The pipeline starts with a flowframe (flow cytometry or mass cytometry data) and will first remove margins, then it will compensate and transform while ending with the PeacoQC quality control. This will give back a list with the cleaned flowframe and the different parameter settings, it will also save the flowframe in a new fcs file and it will make a plot of the quality control for this sample.
+The pipeline starts with a `flowFrame` (flow cytometry or mass cytometry data) and will first remove margins, then it will compensate and transform while ending with the `PeacoQC` quality control. This will give back a list with the cleaned `flowFrame` and the different parameter settings, it will also save the `flowFrame` in a new FCS file and it will make a plot of the quality control for this sample.
 
 Note that the remove margins functionality and compensation is not necessary for mass cytometry data as explained in the code below this example.
 
 ```{r, warning=FALSE, fig.show='hide'}
-# Specify flowframe path and read your flowframe
+# Specify flowFrame path and read your flowFrame
 fileName <- system.file("extdata", "111.fcs", package="PeacoQC")
 ff <- flowCore::read.FCS(fileName)
 
@@ -62,7 +62,7 @@ channels <- c(1, 3, 5:14, 18, 21)
 
 # Remove margins
 # Make sure you do this before any compensation since the internal parameters
-# change and they are neccessary for the RemoveMargins function.
+# change and they are necessary for the RemoveMargins function.
 # If this is not possible, you can specify the internal parameters in the 
 # channel_specifications parameter.
 
@@ -75,7 +75,7 @@ ff <- flowCore::transform(ff,
     flowCore::estimateLogicle(ff, colnames(flowCore::keyword(ff)$SPILL)))
 
 
-# Run PeacoQC and save the cleaned flowframe as an fcs file and plot the results
+# Run PeacoQC and save the cleaned flowFrame as an FCS file and plot the results
 # of this quality control step.
 peacoqc_res <- PeacoQC(
     ff=ff, 
@@ -83,10 +83,10 @@ peacoqc_res <- PeacoQC(
     determine_good_cells="all", 
     save_fcs=TRUE, 
     plot=TRUE,
-    output_directory = "PeacoQC_Example1")
+    output_directory = file.path(tempdir(), "PeacoQC_Example1"))
 
 
-# Filtered flowframe is stored in peacoqc_res$FinalFF and can be used for 
+# Filtered flowFrame is stored in peacoqc_res$FinalFF and can be used for 
 # further analysis.
 ff <- peacoqc_res$FinalFF
 
@@ -96,9 +96,9 @@ ff <- peacoqc_res$FinalFF
 # Mass cytometry data
 
 If you want to clean mass cytometry data files you should alter some parameters.
-The parameter remove_zeros should be set to TRUE. The IT_limit will range between 0.6 and 0.65 since some channels will be more sparse than flow cytometry results. The time_units parameter in the plot function should be also be altered since mass cytometry data is typically measures for a longer time than the flow cytometry data. You should play a bit with the parameter until you don't see the picketfencing effect anymore in the event rate plot (Top left in the overview).
+The parameter remove_zeros should be set to TRUE. The IT_limit will range between 0.6 and 0.65 since some channels will be more sparse than flow cytometry results. The time_units parameter in the plot function should be also be altered since mass cytometry data is typically measures for a longer time than the flow cytometry data. You should play a bit with the parameter until you don't see the picket-fencing effect anymore in the event rate plot (Top left in the overview).
 
-Note that this chunck of code will not be excecuted and that no results will appear in your working directory. This is an example of how to work with mass cytometry data.
+Note that this chunk of code will not be executed and that no results will appear in your working directory. This is an example of how to work with mass cytometry data.
 
 ```{r, eval = FALSE}
 # # Example of how the code could look for mass cytometry data
@@ -125,7 +125,7 @@ peacoqc_results <- PeacoQC(ff,
 
 # Large dataset
 
-If you have a large dataset and you want to run your preprocessing pipeline for multiple files, it is recommended to run it first on a couple of files to tweak your parameters. If your dataset inlcudes channels that have a sparse pattern (e.g. in mass data), the IT_limit should probably be increased in order to be more strict. If it seems that the MAD parameter removes too much, you can also increase this to make PeacoQC less strict.
+If you have a large dataset and you want to run your preprocessing pipeline for multiple files, it is recommended to run it first on a couple of files to tweak your parameters. If your dataset includes channels that have a sparse pattern (e.g. in mass data), the IT_limit should probably be increased in order to be more strict. If it seems that the MAD parameter removes too much, you can also increase this to make PeacoQC less strict.
 
 You can then run all your files with the parameters you chose.
 
@@ -133,7 +133,7 @@ You can then run all your files with the parameters you chose.
 
 # Change IT_limit for one compensated and transformed file. 
 # (Higher=more strict, lower=less strict)
-# The fcs file should not be saved since we are still optimising the parameters
+# The FCS file should not be saved since we are still optimising the parameters
 fileName <- system.file("extdata", "111.fcs", package="PeacoQC")
 ff <- flowCore::read.FCS(fileName)
 
@@ -149,7 +149,7 @@ ff <- flowCore::transform(ff,
     flowCore::estimateLogicle(ff, colnames(flowCore::keyword(ff)$SPILL)))
 
 
-# Run PeacoQC and save the cleaned flowframe as an fcs file and plot the results
+# Run PeacoQC and save the cleaned flowFrame as an FCS file and plot the results
 # of this quality control step.
 peacoqc_res <- PeacoQC(
     ff=ff, 
@@ -157,20 +157,20 @@ peacoqc_res <- PeacoQC(
     determine_good_cells="all", 
     save_fcs=FALSE, 
     plot=TRUE,
-    output_directory = "PeacoQC_Example2",
+    output_directory = file.path(tempdir(), "PeacoQC_Example2"),
     IT_limit = 0.65)
 
 
 ```
 
 
-Note that the next chunck of code will not generate any results. 
+Note that the next chunk of code will not generate any results. 
 
 ```{r, eval = FALSE}
 
 # You can also change the MAD parameter to a lower value 
 # (to make it more strict) or to a higher value (to make it less strict). 
-# Since the MAD analysis does not remove something, this is not neccesary now.
+# Since the MAD analysis does not remove something, this is not necessary now.
 
 peacoqc_res <- PeacoQC(
     ff,
@@ -207,10 +207,51 @@ for (file in files){
 
 ```
 
+# Example using GatingSet 
+
+As an alternative to `flowSet`, PeacoQC can be applied also to the `GatingSet` object.
+
+```{r gatingSet, warning=FALSE}
+
+# prepare GatingSet
+fileName <- system.file("extdata", "111_Comp_Trans.fcs", package="PeacoQC")
+cs <- flowWorkspace::load_cytoset_from_fcs(fileName)
+gs <- flowWorkspace::GatingSet(cs)
+
+# in case of "raw" data, it is necessary to compensate and transform the data before QC
+#
+# fileName <- system.file("extdata", "111.fcs", package="PeacoQC")
+# cs <- flowWorkspace::load_cytoset_from_fcs(fileName)
+# gs <- flowWorkspace::GatingSet(cs)
+
+# # compensate
+# gs <- compensate(gs, flowCore::spillover(gh_pop_get_data(gs[[1]]))$SPILL)
+# 
+# # transform
+# trans.list <- flowCore::estimateLogicle(gs[[1]], channels = grep("^[FS]SC-|Time", colnames(gs), invert=TRUE, value=TRUE))
+# gs <- transform(gs, trans.list)
+
+channels <- c("FSC-A", "SSC-A", "B515-A", "G780-A", "G710-A", 
+              "G660-A", "G610-A", "G560-A", "R780-A", "R710-A", 
+              "R660-A", "V800-A", "V585-A", "V450-A")
+
+
+# Run QC
+PeacoQC_GatingSet(gs, 
+                  channels = channels,
+                  save_fcs = FALSE,
+                  report = FALSE,
+                  output_directory=NULL)
+
+# check that the filter "gates" were added to the GatingSet
+flowWorkspace::gs_get_pop_paths(gs)
+```
+
+
 
 # PeacoQCHeatmap
 
-In order to get an overview on how much the quality control removed, the PeacoQCHeatmap allows for a visualised representation of the different conditions and the different percentages that were removed in different runs.
+In order to get an overview on how much the quality control removed, the `PeacoQCHeatmap` allows for a visualised representation of the different conditions and the different percentages that were removed in different runs.
 
 ```{r, warning = FALSE}
 # Find the path to the report that was created by using the PeacoQC function
@@ -235,38 +276,21 @@ PeacoQCHeatmap(report_location=location, show_values = FALSE,
 
 # PlotPeacoQC without quality control
 
-The PlotPeacoQC function can also be used to only display the peaks of the different channels without doing any quality control. It can even be used to only display the measurements.
+The `PlotPeacoQC` function can also be used to only display the peaks of the different channels without doing any quality control. It can even be used to only display the measurements.
 
 These results will appear in the PeacoQC_plots folder.
 
 ```{r, warning=FALSE, fig.show= 'hide'}
-# Load in compensated and transformed flowframe
+# Load in compensated and transformed flowFrame
 
 fileName <- system.file("extdata", "111_Comp_Trans.fcs", package="PeacoQC")
 ff <- flowCore::read.FCS(fileName)
 
 # Plot only the peaks (No quality control)
-PlotPeacoQC(ff, channels, display_peaks=TRUE, prefix = "PeacoQC_peaks_")
+PlotPeacoQC(ff, channels, display_peaks=TRUE, output_directory=tempdir(), prefix = "PeacoQC_peaks_")
 
 # Plot only the dots of the file
-PlotPeacoQC(ff, channels, display_peaks=FALSE, prefix = "PeacoQC_nopeaks_")
+PlotPeacoQC(ff, channels, display_peaks=FALSE, output_directory=tempdir(), prefix = "PeacoQC_nopeaks_")
 
 
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,0 +1,31 @@
+#' Declare Global Variables for PeacoQC Analysis
+#' 
+#' @name globals
+#' @description
+#' Suppresses R CMD check notes about undefined global variables used in 
+#' non-standard evaluation contexts (typically in dplyr/ggplot operations).
+#' These variables are related to cytometry data analysis in PeacoQC.
+#' 
+#' @details
+#' The following variables are declared as global to prevent R CMD check notes:
+#' \itemize{
+#'   \item Bin - Bin identifier for data binning operations
+#'   \item Cells - Count or identifier of cells in cytometry data
+#'   \item Cluster - Cluster identifier for grouped cells
+#'   \item Peak - Peak identifier in density distributions
+#'   \item fill_blocks - Variable for block filling in visualizations
+#'   \item minimum - Minimum value in a given context
+#'   \item x_max - Maximum value on x-axis
+#'   \item x_min - Minimum value on x-axis
+#'   \item y_max - Maximum value on y-axis
+#'   \item y_min - Minimum value on y-axis
+#' }
+#' 
+#' @note
+#' This is a development-time declaration and does not affect runtime behavior.
+#' It is used to inform R CMD check that these variables are intentionally used
+#' in non-standard evaluation contexts.
+#' 
+#' @keywords internal
+utils::globalVariables(c("Bin", "Cells", "Cluster", "Peak", "fill_blocks", 
+                         "minimum", "x_max", "x_min", "y_max", "y_min"))

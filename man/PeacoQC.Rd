@@ -129,6 +129,7 @@ ff <- flowCore::transform(ff,
 #Run PeacoQC
 PeacoQC_res <- PeacoQC(ff, channels,
                         determine_good_cells="all",
-                        save_fcs=TRUE)
+                        save_fcs=TRUE,
+                        output_directory=tempdir())
 
 }

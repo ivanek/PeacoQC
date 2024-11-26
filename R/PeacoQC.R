@@ -308,7 +308,8 @@ RemoveDoublets <- function(ff,
 #' #Run PeacoQC
 #' PeacoQC_res <- PeacoQC(ff, channels,
 #'                         determine_good_cells="all",
-#'                         save_fcs=TRUE)
+#'                         save_fcs=TRUE,
+#'                         output_directory=tempdir())
 #'
 #' @importFrom methods is
 #'
@@ -605,16 +606,17 @@ PeacoQC <- function(ff,
 #'     channels,
 #'     determine_good_cells="all",
 #'     plot=FALSE,
-#'     save_fcs=TRUE)
+#'     save_fcs=TRUE,
+#'     output_directory=tempdir())
 #'
 #' # Run PlotPeacoQC
-#' PlotPeacoQC(ff, channels, display_peaks=PeacoQC_res)
+#' PlotPeacoQC(ff, channels, display_peaks=PeacoQC_res, output_directory=tempdir())
 #'
 #' ## Plot only the peaks (No quality control)
-#' PlotPeacoQC(ff, channels, display_peaks=TRUE)
+#' PlotPeacoQC(ff, channels, display_peaks=TRUE, output_directory=tempdir())
 #'
 #' ## Plot only the dots of the file
-#' PlotPeacoQC(ff, channels, display_peaks=FALSE)
+#' PlotPeacoQC(ff, channels, display_peaks=FALSE, output_directory=tempdir())
 #'
 #' @export
 PlotPeacoQC <- function(ff,
